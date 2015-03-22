@@ -1,26 +1,26 @@
 package id3v1
 
 import (
-	"io"
 	"bytes"
+	"io"
 )
 
 type Id3v1Tag struct {
 	title, artist, album, comment, year string
-	trackNumber int
+	trackNumber                         int
 }
 
 func ReadTag(r io.ReadSeeker) Id3v1Tag {
-	tagBytes := make([] byte, 128)
+	tagBytes := make([]byte, 128)
 	r.Seek(-128, 2)
 	r.Read(tagBytes)
 
 	header := string(tagBytes[:3])
-	if header != "TAG" { 
+	if header != "TAG" {
 		panic("nooO!")
 	} else {
 		return createTag(tagBytes)
-	} 
+	}
 }
 
 func createTag(tagBytes []byte) Id3v1Tag {
