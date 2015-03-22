@@ -11,16 +11,20 @@ func TestId3s(t *testing.T) { TestingT(t) }
 type Id3v1TagSuite struct{}
 
 var _ = Suite(&Id3v1TagSuite{})
-var file *os.File
 
-func (s *Id3v1TagSuite) SetUpTest(c *C) {
-	var err error
-	file, err = os.Open("_testdata/spice.mp3")
+func readFile(fn string, c *C) *os.File {
+	file, err := os.Open(fn)
 	c.Assert(err, Equals, nil)
+	return file
 }
 
 func (s *Id3v1TagSuite) TestReadWellFormedTag(c *C) {
-	tag := ReadTag(file)
+	file := readFile("_testdata/spice.mp3", c)
+	defer file.Close()
+
+	tag, err := ReadTag(file)
+
+	c.Assert(err, Equals, nil)
 	c.Check(tag.artist, Equals, "Xander")
 	c.Check(tag.title, Equals, "Spice")
 	c.Check(tag.album, Equals, "Things")
@@ -29,6 +33,12 @@ func (s *Id3v1TagSuite) TestReadWellFormedTag(c *C) {
 	c.Check(tag.trackNumber, Equals, 1)
 }
 
-func (s *Id3v1TagSuite) TearDownTest(c *C) {
-	file.Close()
+func (s *Id3v1TagSuite) TestReadNoTag(c *C) {
+	file := readFile("_testdata/tagless-batman.mp3", c)
+	defer file.Close()
+
+	tag, err := ReadTag(file)
+	
+	c.Check(tag, Equals, Id3v1Tag{})
+	c.Check(err.Error(), Equals, "Source does not have tag in standard location")
 }

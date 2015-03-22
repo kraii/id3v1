@@ -3,6 +3,7 @@ package id3v1
 import (
 	"bytes"
 	"io"
+	"errors"
 )
 
 type Id3v1Tag struct {
@@ -10,16 +11,16 @@ type Id3v1Tag struct {
 	trackNumber                         int
 }
 
-func ReadTag(r io.ReadSeeker) Id3v1Tag {
+func ReadTag(r io.ReadSeeker) (Id3v1Tag, error) {
 	tagBytes := make([]byte, 128)
 	r.Seek(-128, 2)
 	r.Read(tagBytes)
 
 	header := string(tagBytes[:3])
 	if header != "TAG" {
-		panic("nooO!")
+		return Id3v1Tag{}, errors.New("Source does not have tag in standard location")
 	} else {
-		return createTag(tagBytes)
+		return createTag(tagBytes), nil
 	}
 }
 
