@@ -27,7 +27,6 @@ func (s *Id3v1TagSuite) TestReadWellFormedTag(c *C) {
 	c.Check(tag.year, Equals, "2015")
 	c.Check(tag.comment, Equals, "say -v Xander")
 	c.Check(tag.trackNumber, Equals, 1)
-
 }
 
 func (s *Id3v1TagSuite) TearDownTest(c *C) {
