@@ -11,6 +11,30 @@ type Id3v1Tag struct {
 	trackNumber                         int
 }
 
+func (tag *Id3v1Tag) Title() string {
+	return tag.title
+}
+
+func (tag *Id3v1Tag) Artist() string {
+	return tag.artist
+}
+
+func (tag *Id3v1Tag) Album() string {
+	return tag.album
+}
+
+func (tag *Id3v1Tag) Comment() string {
+	return tag.comment
+}
+
+func (tag *Id3v1Tag) Year() string {
+	return tag.year
+}
+
+func (tag *Id3v1Tag) TrackNumber() int {
+	return tag.trackNumber
+}
+
 func ReadTag(r io.ReadSeeker) (Id3v1Tag, error) {
 	tagBytes := make([]byte, 128)
 	r.Seek(-128, 2)

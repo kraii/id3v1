@@ -25,12 +25,12 @@ func (s *Id3v1TagSuite) TestReadWellFormedTag(c *C) {
 	tag, err := ReadTag(file)
 
 	c.Assert(err, Equals, nil)
-	c.Check(tag.artist, Equals, "Xander")
-	c.Check(tag.title, Equals, "Spice")
-	c.Check(tag.album, Equals, "Things")
-	c.Check(tag.year, Equals, "2015")
-	c.Check(tag.comment, Equals, "say -v Xander")
-	c.Check(tag.trackNumber, Equals, 1)
+	c.Check(tag.Artist(), Equals, "Xander")
+	c.Check(tag.Title(), Equals, "Spice")
+	c.Check(tag.Album(), Equals, "Things")
+	c.Check(tag.Year(), Equals, "2015")
+	c.Check(tag.Comment(), Equals, "say -v Xander")
+	c.Check(tag.TrackNumber(), Equals, 1)
 }
 
 func (s *Id3v1TagSuite) TestReadNoTag(c *C) {
